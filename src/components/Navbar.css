@@ -1,0 +1,41 @@
+.navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 20px;
+    background-color: white;
+    border-bottom: 1px solid #e3e6f0;
+  }
+  
+  .navbar-left {
+    display: flex;
+    align-items: center;
+  }
+  
+  .page-title {
+    margin: 0;
+    font-size: 1.5rem;
+    color: #5a5c69;
+  }
+  
+  .navbar-right {
+    display: flex;
+    align-items: center;
+  }
+  
+  .user-info {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+  }
+  
+  .user-name {
+    font-weight: bold;
+    color: #5a5c69;
+  }
+  
+  .user-role {
+    font-size: 0.8rem;
+    color: #858796;
+  }
+  

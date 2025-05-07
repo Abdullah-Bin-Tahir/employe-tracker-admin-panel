@@ -1,0 +1,73 @@
+.settings-page {
+    padding: 20px;
+  }
+  
+  .settings-card {
+    background-color: white;
+    border-radius: 8px;
+    padding: 20px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.05);
+    margin-bottom: 20px;
+  }
+  
+  .settings-card h3 {
+    margin-top: 0;
+    color: #5a5c69;
+    margin-bottom: 20px;
+  }
+  
+  .form-group {
+    margin-bottom: 15px;
+  }
+  
+  .form-group label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: 500;
+    color: #5a5c69;
+  }
+  
+  .form-group input {
+    width: 100%;
+    max-width: 400px;
+    padding: 10px;
+    border: 1px solid #d1d3e2;
+    border-radius: 5px;
+    font-size: 16px;
+  }
+  
+  .save-button {
+    padding: 10px 15px;
+    background-color: #4e73df;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.2s;
+  }
+  
+  .save-button:hover {
+    background-color: #2e59d9;
+  }
+  
+  .save-button:disabled {
+    background-color: #b7b9cc;
+    cursor: not-allowed;
+  }
+  
+  .error-message {
+    background-color: #f8d7da;
+    color: #721c24;
+    padding: 10px;
+    border-radius: 5px;
+    margin-bottom: 20px;
+  }
+  
+  .success-message {
+    background-color: #d4edda;
+    color: #155724;
+    padding: 10px;
+    border-radius: 5px;
+    margin-bottom: 20px;
+  }
+  

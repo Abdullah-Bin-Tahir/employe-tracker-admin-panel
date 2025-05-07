@@ -1,0 +1,76 @@
+.sidebar {
+    width: 250px;
+    background-color: #4e73df;
+    color: white;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+  }
+  
+  .sidebar-header {
+    padding: 20px;
+    text-align: center;
+  }
+  
+  .company-name {
+    opacity: 0.8;
+    font-size: 0.9rem;
+  }
+  
+  .sidebar-divider {
+    height: 0;
+    margin: 0;
+    border-top: 1px solid rgba(255, 255, 255, 0.15);
+  }
+  
+  .sidebar-nav {
+    padding: 0;
+    list-style: none;
+    margin-top: 20px;
+  }
+  
+  .sidebar-nav li a {
+    display: flex;
+    align-items: center;
+    padding: 15px 20px;
+    color: rgba(255, 255, 255, 0.8);
+    text-decoration: none;
+    transition: all 0.2s;
+  }
+  
+  .sidebar-nav li a svg {
+    margin-right: 10px;
+  }
+  
+  .sidebar-nav li a:hover,
+  .sidebar-nav li a.active {
+    color: white;
+    background-color: rgba(255, 255, 255, 0.1);
+  }
+  
+  .sidebar-footer {
+    margin-top: auto;
+    padding: 20px;
+  }
+  
+  .logout-button {
+    width: 100%;
+    padding: 10px;
+    background-color: rgba(255, 255, 255, 0.1);
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  .logout-button svg {
+    margin-right: 10px;
+  }
+  
+  .logout-button:hover {
+    background-color: rgba(255, 255, 255, 0.2);
+  }
+  
