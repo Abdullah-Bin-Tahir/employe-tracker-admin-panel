@@ -39,22 +39,78 @@ const EmployeeDetails = () => {
   const [error, setError] = useState("")
   const db = getFirestore()
 
+  // useEffect(() => {
+  //   const loadEmployeeDetails = async () => {
+  //     if (!id) return
+
+  //     try {
+  //       setLoading(true)
+
+  //       // Get employee details
+  //       const employeeDoc = await getDoc(doc(db, "users", id))
+
+  //       if (!employeeDoc.exists()) {
+  //         setError("Employee not found")
+  //         setLoading(false)
+  //         return
+  //       }
+
+  //       const data = employeeDoc.data()
+  //       setEmployee({
+  //         id: employeeDoc.id,
+  //         displayName: data.displayName || data.email,
+  //         email: data.email,
+  //         status: data.status || "offline",
+  //         lastLocation: data.lastLocation,
+  //         lastUpdated: data.lastUpdated?.toDate() || new Date(),
+  //         createdAt: data.createdAt?.toDate() || new Date(),
+  //       })
+
+  //       // Get location history
+  //       const historyQuery = query(collection(db, "users", id, "locationHistory"), orderBy("createdAt", "desc"))
+
+  //       const historySnapshot = await getDocs(historyQuery)
+  //       const historyData: LocationHistory[] = []
+
+  //       historySnapshot.forEach((doc) => {
+  //         const data = doc.data()
+  //         historyData.push({
+  //           id: doc.id,
+  //           latitude: data.latitude,
+  //           longitude: data.longitude,
+  //           eventType: data.eventType,
+  //           timestamp: data.timestamp,
+  //           createdAt: data.createdAt?.toDate() || new Date(),
+  //         })
+  //       })
+
+  //       setLocationHistory(historyData)
+  //     } catch (error) {
+  //       console.error("Error loading employee details:", error)
+  //       setError("Failed to load employee details")
+  //     } finally {
+  //       setLoading(false)
+  //     }
+  //   }
+
+  //   loadEmployeeDetails()
+  // }, [id])
   useEffect(() => {
+    if (!id) return
+  
+    // const db = getFirestore()
+  
     const loadEmployeeDetails = async () => {
-      if (!id) return
-
       try {
-        setLoading(true)
-
         // Get employee details
         const employeeDoc = await getDoc(doc(db, "users", id))
-
+  
         if (!employeeDoc.exists()) {
           setError("Employee not found")
-          setLoading(false)
+          setEmployee(null)
           return
         }
-
+  
         const data = employeeDoc.data()
         setEmployee({
           id: employeeDoc.id,
@@ -65,13 +121,13 @@ const EmployeeDetails = () => {
           lastUpdated: data.lastUpdated?.toDate() || new Date(),
           createdAt: data.createdAt?.toDate() || new Date(),
         })
-
+  
         // Get location history
         const historyQuery = query(collection(db, "users", id, "locationHistory"), orderBy("createdAt", "desc"))
-
+  
         const historySnapshot = await getDocs(historyQuery)
         const historyData: LocationHistory[] = []
-
+  
         historySnapshot.forEach((doc) => {
           const data = doc.data()
           historyData.push({
@@ -83,7 +139,7 @@ const EmployeeDetails = () => {
             createdAt: data.createdAt?.toDate() || new Date(),
           })
         })
-
+  
         setLocationHistory(historyData)
       } catch (error) {
         console.error("Error loading employee details:", error)
@@ -92,10 +148,18 @@ const EmployeeDetails = () => {
         setLoading(false)
       }
     }
-
+  
+    // Load first time
     loadEmployeeDetails()
+  
+    // Set up polling
+    const intervalId = setInterval(() => {
+      loadEmployeeDetails()
+    }, 5000)
+  
+    // Cleanup interval on unmount
+    return () => clearInterval(intervalId)
   }, [id])
-
   const handleDeleteEmployee = async () => {
     if (!id) return
   

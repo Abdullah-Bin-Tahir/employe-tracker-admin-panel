@@ -6,6 +6,7 @@ import { useState } from "react"
 import { useNavigate } from "react-router-dom"
 import { useAuth } from "../contexts/AuthContext"
 import "./Login.css"
+import logo from "../assets/logo.png"
 
 const Login = () => {
   const [email, setEmail] = useState("")
@@ -38,6 +39,7 @@ const Login = () => {
   return (
     <div className="login-container">
       <div className="login-card">
+        <h2> <img src={logo} height={100} width={100} alt="logo" /></h2>
         <h2>Admin Login</h2>
         <p className="login-subtitle">Enter your credentials to access the admin panel</p>
 

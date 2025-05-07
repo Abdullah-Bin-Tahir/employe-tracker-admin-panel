@@ -1,12 +1,14 @@
 "use client"
 
 import { useState, useEffect } from "react"
-import { getFirestore, collection, query, where, onSnapshot } from "firebase/firestore"
+import { getFirestore, collection, query, where, onSnapshot, getDocs } from "firebase/firestore"
 import { useAuth } from "../contexts/AuthContext"
 import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet"
 import "leaflet/dist/leaflet.css"
 import "./Dashboard.css"
 import L from "leaflet"
+import LoadingSpinner from "../components/LoadingSpinner"
+
 
 // Fix for default marker icons in Leaflet with React
 // import L from "leaflet";
@@ -33,28 +35,75 @@ interface EmployeeStatus {
 
 const Dashboard = () => {
   const { currentUser } = useAuth()
+  const [loading, setLoading] = useState(true)
+
   const [employees, setEmployees] = useState<EmployeeStatus[]>([])
   const [stats, setStats] = useState({
     total: 0,
     online: 0,
     offline: 0,
   })
-  const [mapCenter, setMapCenter] = useState<[number, number]>([51.505, -0.09]) // Default to London
-  const [mapZoom, setMapZoom] = useState(13)
+   
+  const [mapCenter, setMapCenter] = useState<[number, number]>([29.930918993835288, 69.16106654713788])
+  const [mapZoom, setMapZoom] = useState(5)
   const db = getFirestore()
 
+  // useEffect(() => {
+  //   if (!currentUser) return
+
+  //   const employeesQuery = query(
+  //     collection(db, "users"),
+  //     where("companyId", "==", currentUser.companyId),
+  //     where("role", "==", "employee"),
+  //   )
+
+  //   const unsubscribe = onSnapshot(employeesQuery, (snapshot) => {
+  //     const employeeData: EmployeeStatus[] = []
+
+  //     snapshot.forEach((doc) => {
+  //       const data = doc.data()
+  //       employeeData.push({
+  //         id: doc.id,
+  //         displayName: data.displayName || data.email,
+  //         email: data.email,
+  //         status: data.status || "offline",
+  //         lastLocation: data.lastLocation,
+  //         lastUpdated: data.lastUpdated?.toDate() || new Date(),
+  //       })
+  //     })
+
+  //     setEmployees(employeeData)
+
+  //     // Update stats
+  //     setStats({
+  //       total: employeeData.length,
+  //       online: employeeData.filter((e) => e.status === "online").length,
+  //       offline: employeeData.filter((e) => e.status === "offline").length,
+  //     })
+
+  //     // Set map center to the first online employee with location
+  //     const onlineWithLocation = employeeData.find((e) => e.status === "online" && e.lastLocation)
+  //     if (onlineWithLocation && onlineWithLocation.lastLocation) {
+  //       setMapCenter([onlineWithLocation.lastLocation.latitude, onlineWithLocation.lastLocation.longitude])
+  //     }
+  //   })
+
+  //   return () => unsubscribe()
+  // }, [currentUser])
   useEffect(() => {
     if (!currentUser) return
-
-    const employeesQuery = query(
-      collection(db, "users"),
-      where("companyId", "==", currentUser.companyId),
-      where("role", "==", "employee"),
-    )
-
-    const unsubscribe = onSnapshot(employeesQuery, (snapshot) => {
+  
+    const intervalId = setInterval(async () => {
+      const employeesQuery = query(
+        collection(db, "users"),
+        where("companyId", "==", currentUser.companyId),
+        where("role", "==", "employee"),
+      )
+  
+      const snapshot = await getDocs(employeesQuery)
+  
       const employeeData: EmployeeStatus[] = []
-
+  
       snapshot.forEach((doc) => {
         const data = doc.data()
         employeeData.push({
@@ -66,28 +115,32 @@ const Dashboard = () => {
           lastUpdated: data.lastUpdated?.toDate() || new Date(),
         })
       })
-
+  
       setEmployees(employeeData)
-
-      // Update stats
+      setLoading(false)
+  
       setStats({
         total: employeeData.length,
         online: employeeData.filter((e) => e.status === "online").length,
         offline: employeeData.filter((e) => e.status === "offline").length,
       })
-
-      // Set map center to the first online employee with location
+  
       const onlineWithLocation = employeeData.find((e) => e.status === "online" && e.lastLocation)
       if (onlineWithLocation && onlineWithLocation.lastLocation) {
-        setMapCenter([onlineWithLocation.lastLocation.latitude, onlineWithLocation.lastLocation.longitude])
+        setMapCenter([
+          onlineWithLocation.lastLocation.latitude,
+          onlineWithLocation.lastLocation.longitude,
+        ])
       }
-    })
-
-    return () => unsubscribe()
+    }, 5000) // every 5 seconds
+  
+    return () => clearInterval(intervalId)
   }, [currentUser])
-
   const formatDate = (date: Date) => {
     return date.toLocaleString()
+  }
+  if (loading) {
+    return <LoadingSpinner />
   }
 
   return (

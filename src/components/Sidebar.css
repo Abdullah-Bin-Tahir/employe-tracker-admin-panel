@@ -10,8 +10,21 @@
   .sidebar-header {
     padding: 20px;
     text-align: center;
+
   }
-  
+  /* .logo-img {
+    filter: invert(100%) sepia(100%) saturate(1000%) hue-rotate(200deg);
+  }
+  .logo-colored {
+    background: #ffff;
+    -webkit-mask: url('../assets/logo.png') no-repeat center;
+    mask: url('../assets/logo.png') no-repeat center;
+    -webkit-mask-size: contain;
+    mask-size: contain;
+    width: 100px;
+    height: 100px;
+  }
+   */
   .company-name {
     opacity: 0.8;
     font-size: 0.9rem;

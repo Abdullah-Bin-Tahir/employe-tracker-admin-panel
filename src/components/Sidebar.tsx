@@ -3,6 +3,7 @@
 import { NavLink } from "react-router-dom"
 import { useAuth } from "../contexts/AuthContext"
 import { FaChartPie, FaUsers, FaCog, FaSignOutAlt } from "react-icons/fa";
+import logo from "../assets/logo.png";
 import "./Sidebar.css"
 
 const Sidebar = () => {
@@ -19,7 +20,8 @@ const Sidebar = () => {
   return (
     <div className="sidebar">
       <div className="sidebar-header">
-        <h2>Team Manager</h2>
+        <h2 style={{ color: "white" }}>Employee Tracker</h2>
+        {/* <div className="logo-colored"></div> */}
         <p className="company-name">{currentUser?.displayName}</p>
       </div>
       <div className="sidebar-divider"></div>
